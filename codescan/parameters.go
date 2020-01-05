@@ -200,6 +200,7 @@ func (p *parameterBuilder) buildFromType(otpe types.Type, op *spec.Operation, se
 
 func (p *parameterBuilder) buildFromField(fld *types.Var, tpe types.Type, typable swaggerTypable, seen map[string]spec.Parameter) error {
 	debugLog("build from field %s: %T", fld.Name(), tpe)
+
 	switch ftpe := tpe.(type) {
 	case *types.Basic:
 		return swaggerSchemaForType(ftpe.Name(), typable)
@@ -283,6 +284,10 @@ func (p *parameterBuilder) buildFromStruct(decl *entityDecl, tpe *types.Struct, 
 			if err := p.buildFromType(fld.Type(), op, seen); err != nil {
 				return err
 			}
+			continue
+		}
+
+		if !fld.Exported() {
 			continue
 		}
 
