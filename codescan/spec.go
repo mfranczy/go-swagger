@@ -193,7 +193,13 @@ func (s *specBuilder) buildModels() error {
 	if !s.scanModels {
 		return nil
 	}
-	for _, decl := range s.ctx.app.Models {
+
+	var models []*entityDecl
+	for _, v := range s.ctx.app.Models {
+		models = append(models, v)
+	}
+
+	for _, decl := range models {
 		if err := s.buildDiscoveredSchema(decl); err != nil {
 			return err
 		}
